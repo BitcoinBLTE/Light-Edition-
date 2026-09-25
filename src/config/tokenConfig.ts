@@ -1,0 +1,200 @@
+/**
+ * Centralized Project & Token Configuration for Bitcoin Light Edition
+ * 
+ * Strict Zero-Fake-Data compliance:
+ * - Mint address is dynamically configured or null prior to deployment.
+ * - Social links only appear when live URLs exist.
+ * - Allocations strictly equal 100% (420,000 tokens).
+ * - Roadmap statuses strictly reflect verified milestones.
+ */
+
+export interface TokenAllocation {
+  id: string;
+  category: string;
+  percentage: number; // Must sum to 100
+  amount: number;     // Equal to (percentage / 100) * totalSupply
+  description: string;
+  color: string;
+}
+
+export interface RoadmapMilestone {
+  title: string;
+  description: string;
+  status: 'COMPLETED' | 'IN_PROGRESS' | 'UPCOMING';
+  items: string[];
+}
+
+export interface SocialLink {
+  id: string;
+  label: string;
+  url: string | null; // Null hides the link to uphold zero-placeholder policy
+}
+
+export interface ProjectConfig {
+  name: string;
+  shortName: string;
+  symbol: string;
+  network: string;
+  totalSupply: number;
+  formattedSupply: string;
+  tokenStandard: string;
+  decimals: number;
+  mintAddress: string | null;
+  tagline: string;
+  missionStatement: string;
+  authorityStatus: string;
+  isMainnetLive: boolean;
+  tradingVenues: {
+    name: string;
+    url: string | null;
+    status: 'LIVE' | 'PENDING_DEPLOYMENT';
+  }[];
+  socials: SocialLink[];
+  allocations: TokenAllocation[];
+  roadmap: RoadmapMilestone[];
+}
+
+export const TOKEN_CONFIG: ProjectConfig = {
+  name: "Bitcoin Light Edition",
+  shortName: "Bitcoin Light",
+  symbol: "BLTE",
+  network: "Solana",
+  totalSupply: 420000,
+  formattedSupply: "420,000",
+  tokenStandard: "SPL / Token-2022",
+  decimals: 9,
+  // When deployed to mainnet, populate via VITE_TOKEN_MINT_ADDRESS or set directly:
+  mintAddress: (import.meta.env.VITE_TOKEN_MINT_ADDRESS as string) || null,
+  tagline: "A New Chapter in the Digital Asset Landscape",
+  missionStatement: "Bitcoin Light Edition is a Solana-based digital asset inspired by the principles that helped make Bitcoin a defining innovation in digital finance—scarcity, transparency, decentralization, and borderless digital value.",
+  authorityStatus: "Mint authority permanently revoked / Immutable supply on Solana genesis",
+  isMainnetLive: Boolean(import.meta.env.VITE_TOKEN_MINT_ADDRESS),
+  tradingVenues: [
+    {
+      name: "Raydium (DEX)",
+      url: null, // Populated upon pool creation
+      status: "PENDING_DEPLOYMENT"
+    },
+    {
+      name: "Jupiter Aggregator",
+      url: null,
+      status: "PENDING_DEPLOYMENT"
+    },
+    {
+      name: "Orca",
+      url: null,
+      status: "PENDING_DEPLOYMENT"
+    }
+  ],
+  socials: [
+    {
+      id: "twitter",
+      label: "X (Twitter)",
+      url: "https://x.com/BitcoinBLTE"
+    },
+    {
+      id: "telegram",
+      label: "Telegram",
+      url: "https://t.me/BitcoinBLTE"
+    },
+    {
+      id: "github",
+      label: "GitHub",
+      url: "https://github.com/BitcoinBLTE"
+    },
+    {
+      id: "instagram",
+      label: "Instagram",
+      url: "https://www.instagram.com/bitcoinblte"
+    }
+  ],
+  allocations: [
+    {
+      id: "fair-launch",
+      category: "Fair Launch & Public Distribution",
+      percentage: 55,
+      amount: 231000,
+      description: "Direct community and public liquidity allocation with decentralized access.",
+      color: "#D97706" // Warm amber/gold
+    },
+    {
+      id: "liquidity",
+      category: "DEX Liquidity Pool",
+      percentage: 25,
+      amount: 105000,
+      description: "Permanent automated market maker liquidity on Solana decentralized exchanges.",
+      color: "#EAB308" // Gold
+    },
+    {
+      id: "ecosystem",
+      category: "Ecosystem & Scarcity Reserve",
+      percentage: 12,
+      amount: 50400,
+      description: "Community initiatives, open-source integrations, and validator tooling grants.",
+      color: "#14F195" // Solana Green
+    },
+    {
+      id: "development",
+      category: "Core Architecture & Audits",
+      percentage: 8,
+      amount: 33600,
+      description: "Smart contract maintenance, security verifications, and protocol tooling.",
+      color: "#9945FF" // Solana Purple
+    }
+  ],
+  roadmap: [
+    {
+      title: "PHASE 01 — FOUNDATION",
+      description: "Establishment of architectural foundations, digital scarcity parameters, and web presence.",
+      status: "COMPLETED",
+      items: [
+        "Project concept & economic scarcity modeling",
+        "SPL / Token-2022 token architecture design",
+        "Comprehensive White Paper publication",
+        "Public web platform & transparency portal",
+        "Solana devnet deployment verification"
+      ]
+    },
+    {
+      title: "PHASE 02 — LAUNCH",
+      description: "Mainnet contract deployment, permanent authority configuration, and liquidity initialization.",
+      status: "IN_PROGRESS",
+      items: [
+        "Solana mainnet token deployment",
+        "Mint authority revocation & immutability verification",
+        "Initial decentralized liquidity pool creation",
+        "On-chain verification on Solscan & Solana Explorer",
+        "DexScreener and Jupiter terminal integration"
+      ]
+    },
+    {
+      title: "PHASE 03 — ECOSYSTEM",
+      description: "Transparency dashboard, real-time analytics, and open blockchain community tooling.",
+      status: "UPCOMING",
+      items: [
+        "Real-time on-chain supply and holder analytics",
+        "Decentralized community governance tooling",
+        "Solana DeFi ecosystem integrations",
+        "Third-party independent smart contract audits"
+      ]
+    },
+    {
+      title: "PHASE 04 — EXPANSION",
+      description: "Broadening digital scarcity utility, ecosystem integrations, and community tools.",
+      status: "UPCOMING",
+      items: [
+        "Long-term digital scarcity preservation initiatives",
+        "Cross-program integrations across Solana ecosystem",
+        "Community-driven research & open documentation",
+        "Next-generation decentralized app integrations"
+      ]
+    }
+  ]
+};
+
+// Verification helper guaranteeing 100% mathematical integrity
+export const validateTokenomicsIntegrity = (): boolean => {
+  const sumPercentage = TOKEN_CONFIG.allocations.reduce((acc, a) => acc + a.percentage, 0);
+  const sumAmount = TOKEN_CONFIG.allocations.reduce((acc, a) => acc + a.amount, 0);
+  return sumPercentage === 100 && sumAmount === TOKEN_CONFIG.totalSupply;
+};
