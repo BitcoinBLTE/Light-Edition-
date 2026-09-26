@@ -609,6 +609,8 @@ export const en: TranslationSchema = {
     twitter_desc: 'Official announcements, protocol development notes, and launch verification updates.',
     github_desc: 'Open-source token specifications, distribution verification scripts, and community tools.',
     instagram_desc: 'Official media, infographics, and visual updates from the Bitcoin Light Edition community.',
+    youtube_desc: 'Official YouTube channel for architectural briefings, video guides, and project updates.',
+    email_desc: 'Direct project communications, technical inquiries, and verified ecosystem correspondence.',
     generic_desc: 'Community coordination and verified discussion updates.',
     verified_badge: 'Verified',
     official_channel: 'Official Channel',

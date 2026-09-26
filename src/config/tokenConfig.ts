@@ -106,6 +106,16 @@ export const TOKEN_CONFIG: ProjectConfig = {
       id: "instagram",
       label: "Instagram",
       url: "https://www.instagram.com/bitcoinblte"
+    },
+    {
+      id: "youtube",
+      label: "YouTube",
+      url: "https://www.youtube.com/@BitcoinLightEdition"
+    },
+    {
+      id: "email",
+      label: "Official Email",
+      url: "mailto:Info@bitcoinblte.com"
     }
   ],
   allocations: [

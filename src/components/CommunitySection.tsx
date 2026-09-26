@@ -1,8 +1,8 @@
 import React from 'react';
-import { ExternalLink, ShieldAlert, MessageSquare, CheckCircle2 } from 'lucide-react';
+import { ExternalLink, ShieldAlert, MessageSquare, CheckCircle2, Mail } from 'lucide-react';
 import { TOKEN_CONFIG } from '../config/tokenConfig';
 import { useLanguage } from '../i18n/LanguageContext';
-import { InstagramIcon, XTwitterIcon, GithubIcon } from './PlatformIcons';
+import { InstagramIcon, XTwitterIcon, GithubIcon, TelegramIcon, YouTubeIcon } from './PlatformIcons';
 
 export const CommunitySection: React.FC = () => {
   const { t } = useLanguage();
@@ -13,6 +13,8 @@ export const CommunitySection: React.FC = () => {
     if (id === 'twitter') return t.community.twitter_desc;
     if (id === 'github') return t.community.github_desc;
     if (id === 'instagram') return t.community.instagram_desc;
+    if (id === 'youtube') return t.community.youtube_desc || 'Official YouTube channel for architectural briefings, video guides, and project updates.';
+    if (id === 'email') return t.community.email_desc || 'Direct project communications, technical inquiries, and verified ecosystem correspondence.';
     return t.community.generic_desc;
   };
 
@@ -38,13 +40,17 @@ export const CommunitySection: React.FC = () => {
             const isTwitter = social.id === 'twitter';
             const isGithub = social.id === 'github';
             const isInstagram = social.id === 'instagram';
+            const isTelegram = social.id === 'telegram';
+            const isYouTube = social.id === 'youtube';
+            const isEmail = social.id === 'email';
+            const isMailto = social.url?.startsWith('mailto:');
 
             return (
               <a
                 key={social.id}
                 href={social.url!}
-                target="_blank"
-                rel="noopener noreferrer"
+                target={isMailto ? undefined : '_blank'}
+                rel={isMailto ? undefined : 'noopener noreferrer'}
                 className="bg-[#FCFCFC] rounded-[22px] sm:rounded-[26px] p-4.5 sm:p-5 border border-[#E5E5E5] shadow-[0_2px_12px_rgba(0,0,0,0.03)] hover:border-[#D0D0D0] hover:shadow-[0_4px_18px_rgba(0,0,0,0.06)] transition-all flex flex-col justify-between group min-h-[142px]"
               >
                 <div>
@@ -54,7 +60,10 @@ export const CommunitySection: React.FC = () => {
                         {isTwitter && <XTwitterIcon size={18} />}
                         {isGithub && <GithubIcon size={18} />}
                         {isInstagram && <InstagramIcon size={18} className="text-[#080808] group-hover:text-[#B8661B]" />}
-                        {!isTwitter && !isGithub && !isInstagram && <MessageSquare className="w-4 h-4" />}
+                        {isTelegram && <TelegramIcon size={18} />}
+                        {isYouTube && <YouTubeIcon size={18} className="text-[#080808] group-hover:text-[#EF4444]" />}
+                        {isEmail && <Mail className="w-4 h-4 text-[#080808] group-hover:text-[#B8661B]" />}
+                        {!isTwitter && !isGithub && !isInstagram && !isTelegram && !isYouTube && !isEmail && <MessageSquare className="w-4 h-4" />}
                       </div>
 
                       <div className="min-w-0">
@@ -77,8 +86,10 @@ export const CommunitySection: React.FC = () => {
                 </div>
 
                 <div className="mt-3 pt-2.5 border-t border-[#E5E5E5] flex items-center justify-between text-[11px] font-mono text-[#888888]">
-                  <span>{t.community.official_channel}</span>
-                  <span className="text-[#B8661B] font-bold group-hover:underline">Open Link →</span>
+                  <span>{isEmail ? 'Direct Inquiries' : t.community.official_channel}</span>
+                  <span className="text-[#B8661B] font-bold group-hover:underline">
+                    {isEmail ? 'Send Email →' : 'Open Link →'}
+                  </span>
                 </div>
               </a>
             );

@@ -289,6 +289,8 @@ export interface TranslationSchema {
     twitter_desc: string;
     github_desc: string;
     instagram_desc: string;
+    youtube_desc?: string;
+    email_desc?: string;
     generic_desc: string;
     verified_badge: string;
     official_channel: string;

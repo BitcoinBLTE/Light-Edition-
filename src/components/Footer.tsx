@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Copy, Check, ExternalLink, ShieldCheck, BookOpen } from 'lucide-react';
+import { Copy, Check, ExternalLink, ShieldCheck, BookOpen, Mail } from 'lucide-react';
 import { TOKEN_CONFIG } from '../config/tokenConfig';
 import { useLanguage } from '../i18n/LanguageContext';
-import { InstagramIcon, XTwitterIcon, GithubIcon, TelegramIcon } from './PlatformIcons';
+import { InstagramIcon, XTwitterIcon, GithubIcon, TelegramIcon, YouTubeIcon } from './PlatformIcons';
 
 interface FooterProps {
   onOpenTradeModal: () => void;
@@ -38,7 +38,7 @@ export const Footer: React.FC<FooterProps> = ({
     { label: t.nav.faq, href: '#faq' }
   ];
 
-  const activeSocials = TOKEN_CONFIG.socials.filter((s) => s.url !== null && s.url.startsWith('http'));
+  const activeSocials = TOKEN_CONFIG.socials.filter((s) => s.url !== null);
 
   return (
     <footer className="bg-white border-t border-[#E5E5E5] text-[#4A4A4A]">
@@ -61,8 +61,8 @@ export const Footer: React.FC<FooterProps> = ({
               {t.footer.mission}
             </p>
 
-            {/* Social Links & White Paper Button */}
-            <div className="flex flex-wrap items-center gap-3 pt-2">
+            {/* Read White Paper Button */}
+            <div className="pt-1">
               <button
                 onClick={onOpenWhitePaper}
                 className="px-4 py-2 rounded-[14px] bg-[#FAF5EF] hover:bg-[#F2E8DC] text-[#B8661B] border border-[#E9C9A5] text-xs font-mono font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
@@ -70,22 +70,31 @@ export const Footer: React.FC<FooterProps> = ({
                 <BookOpen className="w-3.5 h-3.5 text-[#B8661B]" />
                 <span>{t.footer.btn_whitepaper}</span>
               </button>
+            </div>
 
-              {activeSocials.map((social) => (
-                <a
-                  key={social.id}
-                  href={social.url!}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-9 h-9 rounded-[12px] bg-[#F5F5F5] hover:bg-[#FAF5EF] border border-[#E5E5E5] hover:border-[#E9C9A5] flex items-center justify-center text-[#080808] hover:text-[#B8661B] transition-colors"
-                  aria-label={social.label}
-                >
-                  {social.id === 'twitter' && <XTwitterIcon size={15} />}
-                  {social.id === 'telegram' && <TelegramIcon size={16} />}
-                  {social.id === 'github' && <GithubIcon size={15} />}
-                  {social.id === 'instagram' && <InstagramIcon size={16} />}
-                </a>
-              ))}
+            {/* Social Icons row located directly under the Read White Paper button */}
+            <div className="flex flex-wrap items-center gap-2.5 pt-0.5">
+              {activeSocials.map((social) => {
+                const isMailto = social.url?.startsWith('mailto:');
+                return (
+                  <a
+                    key={social.id}
+                    href={social.url!}
+                    target={isMailto ? undefined : '_blank'}
+                    rel={isMailto ? undefined : 'noopener noreferrer'}
+                    className="w-9 h-9 rounded-[12px] bg-[#F5F5F5] hover:bg-[#FAF5EF] border border-[#E5E5E5] hover:border-[#E9C9A5] flex items-center justify-center text-[#080808] hover:text-[#B8661B] transition-colors"
+                    aria-label={social.label}
+                    title={social.label}
+                  >
+                    {social.id === 'twitter' && <XTwitterIcon size={15} />}
+                    {social.id === 'telegram' && <TelegramIcon size={16} />}
+                    {social.id === 'github' && <GithubIcon size={15} />}
+                    {social.id === 'instagram' && <InstagramIcon size={16} />}
+                    {social.id === 'youtube' && <YouTubeIcon size={16} />}
+                    {social.id === 'email' && <Mail className="w-3.5 h-3.5" />}
+                  </a>
+                );
+              })}
             </div>
           </div>
 
